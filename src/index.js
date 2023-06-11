@@ -22,7 +22,7 @@ fetchBreeds()
     console.error(error);
     loader.style.display = 'none';
     error.style.display = 'block';
-    Notiflix.Notify.Failure(' ❌ Oops! Something went wrong! Try reloading the page!!!');
+    Notiflix.Notify.failure(' Oops! Something went wrong! Try reloading the page!!!');
     });
 
 function handleBreedSelect() {
