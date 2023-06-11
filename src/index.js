@@ -7,28 +7,29 @@ const error = document.querySelector('.error');
 const catInfo = document.querySelector('.cat-info');
 
 fetchBreeds()
-  .then(breeds => {
+    .then(breeds => {
     breeds.forEach(breed => {
-      const option = document.createElement('option');
-      option.value = breed.id;
-      option.text = breed.name;
-      breedSelect.appendChild(option);
+        const option = document.createElement('option');
+        option.value = breed.id;
+        option.text = breed.name;
+        breedSelect.appendChild(option);
     });
     breedSelect.addEventListener('change', handleBreedSelect);
     loader.style.display = 'none';
     breedSelect.style.display = 'block';
-  })
-  .catch(error => {
+    })
+    .catch(error => {
     console.error(error);
     loader.style.display = 'none';
     error.style.display = 'block';
-  });
+    Notiflix.Notify.Failure(' ❌ Oops! Something went wrong! Try reloading the page!!!');
+    });
 
 function handleBreedSelect() {
     const selectedBreedId = breedSelect.value;
-  loader.style.display = 'block';
-  error.style.display = 'none';
-  catInfo.innerHTML = '';
+    loader.style.display = 'block';
+    error.style.display = 'none';
+    catInfo.innerHTML = '';
 
     fetchCatByBreed(selectedBreedId)
     .then(catData => {
@@ -38,12 +39,12 @@ function handleBreedSelect() {
         const image = document.createElement('img');
         image.setAttribute('src', imageUrl);
         image.setAttribute('width', '400');
-        image.setAttribute('height', '100%');
+        image.setAttribute('height', 'auto');
         image.style.float = 'left'; 
         catInfo.appendChild(image);
 
         const textContainer = document.createElement('div');
-        textContainer.style.marginLeft = '320px'
+        textContainer.style.marginLeft = '20px'
         textContainer.style.padding = '10px'; 
         textContainer.style.display = 'flex';
         textContainer.style.alignItems = 'center';
