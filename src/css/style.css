@@ -1,0 +1,14 @@
+.notiflix-notify-failure {
+    background-color: white;
+    color: red;
+    border: none;
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    z-index: 9999;
+}
+
+.notiflix-notify-failure .notiflix-notify-message {
+    font-weight: bold;
+}
+

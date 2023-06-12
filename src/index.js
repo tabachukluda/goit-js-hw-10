@@ -1,4 +1,4 @@
-import Notiflix from 'notiflix';
+import * as Notiflix from 'notiflix';
 import { fetchBreeds, fetchCatByBreed } from './js/cat-api.js';
 
 const breedSelect = document.querySelector('.breed-select');
@@ -6,8 +6,11 @@ const loader = document.querySelector('.loader');
 const error = document.querySelector('.error');
 const catInfo = document.querySelector('.cat-info');
 
+let breedsLoaded = false;
+
 fetchBreeds()
-    .then(breeds => {
+.then(breeds => {
+    breedsLoaded = true;
     breeds.forEach(breed => {
         const option = document.createElement('option');
         option.value = breed.id;
@@ -15,69 +18,61 @@ fetchBreeds()
         breedSelect.appendChild(option);
     });
     breedSelect.addEventListener('change', handleBreedSelect);
-    loader.style.display = 'none';
-    breedSelect.style.display = 'block';
-    })
-    .catch(error => {
-    console.error(error);
-    loader.style.display = 'none';
-    error.style.display = 'block';
-    Notiflix.Notify.failure(' Oops! Something went wrong! Try reloading the page!!!');
-    });
+    
+})
 
 function handleBreedSelect() {
     const selectedBreedId = breedSelect.value;
-    loader.style.display = 'block';
     error.style.display = 'none';
     catInfo.innerHTML = '';
 
+    if (!breedsLoaded) {
+    return;
+}
+
     fetchCatByBreed(selectedBreedId)
     .then(catData => {
-        console.log(catData);
-        const { imageUrl, breed, description, temperament } = catData;
-        console.log(imageUrl);
-        const image = document.createElement('img');
-        image.setAttribute('src', imageUrl);
-        image.setAttribute('width', '400');
-        image.setAttribute('height', 'auto');
-        image.style.float = 'left'; 
-        catInfo.appendChild(image);
+        if (!catData) {
+        throw new Error('No image found for the selected breed');
+    }
 
-        const textContainer = document.createElement('div');
-        textContainer.style.marginLeft = '20px'
-        textContainer.style.padding = '10px'; 
-        textContainer.style.display = 'flex';
-        textContainer.style.alignItems = 'center';
+    const { imageUrl, breed, description, temperament } = catData;
 
-        const textContent = document.createElement('div');
-        textContent.style.marginLeft = '20px'; 
+    const image = document.createElement('img');
+    image.setAttribute('src', imageUrl);
+    image.setAttribute('width', '400');
+    image.setAttribute('height', 'auto');
+    image.style.float = 'left';
+    catInfo.appendChild(image);
 
-        
-        const breedName = document.createElement('h2');
-        breedName.style.color = '#2E2F42';
-        breedName.textContent = breed;
-        textContent.appendChild(breedName);
+    const textContainer = document.createElement('div');
+    textContainer.style.marginLeft = '20px';
+    textContainer.style.padding = '10px';
+    textContainer.style.display = 'flex';
+    textContainer.style.alignItems = 'center';
 
-        const descriptionPara = document.createElement('p');
-        descriptionPara.style.marginRight = '350px';
-        descriptionPara.style.textAlign = 'justify';
-        descriptionPara.textContent = description;
-        textContent.appendChild(descriptionPara);
+    const textContent = document.createElement('div');
+    textContent.style.marginLeft = '20px';
 
-        const temperamentPara = document.createElement('p');
-        temperamentPara.textContent = `TEMPERAMENT:
+    const breedName = document.createElement('h2');
+    breedName.style.color = '#2E2F42';
+    breedName.textContent = breed;
+    textContent.appendChild(breedName);
+
+    const descriptionPara = document.createElement('p');
+    descriptionPara.style.marginRight = '350px';
+    descriptionPara.style.textAlign = 'justify';
+    descriptionPara.textContent = description;
+    textContent.appendChild(descriptionPara);
+
+    const temperamentPara = document.createElement('p');
+    temperamentPara.textContent = `TEMPERAMENT:
         ${temperament}`;
-        textContent.appendChild(temperamentPara);
-        textContainer.appendChild(textContent);
-        catInfo.appendChild(textContainer);
-
-
-        loader.style.display = 'none';
-        catInfo.style.display = 'block';
+    textContent.appendChild(temperamentPara);
+    textContainer.appendChild(textContent);
+    catInfo.appendChild(textContainer);
     })
     .catch(error => {
-        console.error(error);
-        loader.style.display = 'none';
-        error.style.display = 'block';
-    });
+        Notiflix.Notify.failure('Oops! Something went wrong! Try reloading the page!!!');
+})
 }
