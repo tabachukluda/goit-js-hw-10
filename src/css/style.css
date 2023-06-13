@@ -1,14 +1,11 @@
-.notiflix-notify-failure {
-    background-color: white;
-    color: red;
-    border: none;
-    position: fixed;
-    top: 10px;
-    left: 10px;
-    z-index: 9999;
+.loader {
+    color: #d61128;
+    font-family: 'Raleway', sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 1.33;
 }
-
-.notiflix-notify-failure .notiflix-notify-message {
-    font-weight: bold;
+.cat-info{
+    background-color: rgb(240, 237, 237);
+    
 }
-
