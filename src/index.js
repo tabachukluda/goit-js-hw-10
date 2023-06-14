@@ -89,6 +89,7 @@ function handleBreedSelect() {
     })
         .catch(error => {
         hideLoader();
-        Notiflix.Notify.failure('Oops! Something went wrong! Try reloading the page!!!');
-})
+            Notiflix.Notify.failure('Oops! Something went wrong! Try reloading the page!!!');   
+        
+    });
 }
